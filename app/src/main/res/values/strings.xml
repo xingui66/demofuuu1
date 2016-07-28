@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">demofuuu</string>
     <string name="action_settings">Settings</string>
+    <string name="isOpen">isOpen</string>
+    <string name="isClose">isClose</string>
+    <string name="title_activity_ffragment">FFragmentActivity</string>
 </resources>

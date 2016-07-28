@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.flytv.demofuuu.activity.FFragmentActivity"
+    tools:showIn="@layout/activity_ffragment">
+
+    <fragment
+        android:name="com.example.flytv.demofuuu.fragment.LeftFragment"
+        android:layout_width="100dp"
+        android:layout_height="300dp"
+        android:id="@+id/left_fragment">
+    </fragment>
+    <fragment
+        android:id="@+id/content_fragment"
+        android:name="com.example.flytv.demofuuu.fragment.ContentFragment"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/left_fragment">
+    </fragment>
+
+</RelativeLayout>
