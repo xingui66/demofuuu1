@@ -30,13 +30,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.flytv.demofuuu.activity.FFragmentActivity;
+import com.example.flytv.demofuuu.entity.example;
+import com.example.flytv.demofuuu.utils.OkHttpClientManager;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 /*import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;*/
@@ -46,6 +51,9 @@ import cn.sharesdk.onekeyshare.OnekeyShare;*/
 public class MainActivity extends AppCompatActivity {
 
 
+    /**
+     * 接口：http://web.sr.gehua.net.cn/md/api/home/0/index
+     */
     private ViewPager mvp;
     private TextView tv_title;
     private LinearLayout ll_container;
@@ -70,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        EventBus.getDefault().register(this);
 
         /**
          * 有盟统计+
@@ -151,6 +160,32 @@ public class MainActivity extends AppCompatActivity {
         //volley使用的方法
         volley_get();
         volley_post();
+
+        //访问网络数据
+        getDataFromServer();
+    }
+
+    //请求网络数据
+    private void getDataFromServer() {
+        OkHttpClientManager a=OkHttpClientManager.getInstance();
+        a.getAsyn("http://web.sr.gehua.net.cn/md/api/home/0/index", new OkHttpClientManager.ResultCallback() {
+            @Override
+            public void onError(okhttp3.Request request, Exception e) {
+                EventBus.getDefault().post("访问失败了！");
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                EventBus.getDefault().post("成功了！");
+            }
+        });
+
+    }
+    protected void parseJson(String result){
+        Gson gson=new Gson();
+        example newsMenuBean = gson.fromJson(result, example.class);
+        System.out.println("解析结果："+newsMenuBean);
+
     }
 
     private void initActionBar() {
@@ -209,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+
+        // 界面销毁时，取消订阅16.
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -336,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
             //请求成功
-                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -356,5 +394,21 @@ public class MainActivity extends AppCompatActivity {
         request.setTag("volley_post_remove");
         //将请求添加到队列里
         MyApplication.getHttpQueue().add(request);
+    }
+
+
+    //EventBus
+
+    public void onEventMainThread(String ss) {
+        Toast.makeText(this, ss, Toast.LENGTH_LONG).show();
+    }
+    public void onEventBackgroundThread(String ss) {
+        Toast.makeText(this, ss, Toast.LENGTH_LONG).show();
+    }
+    public void onEventAsync(String ss) {
+        Toast.makeText(this, ss, Toast.LENGTH_LONG).show();
+    }
+    public void onEvent(String ss) {
+        Toast.makeText(this, ss, Toast.LENGTH_LONG).show();
     }
 }
