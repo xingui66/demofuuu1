@@ -18,9 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.flytv.demofuuu.activity.FFragmentActivity;
 import com.example.flytv.demofuuu.entity.example;
+import com.example.flytv.demofuuu.login2main.FindItemsInteractorImpl;
+import com.example.flytv.demofuuu.login2main.MainPresenter;
+import com.example.flytv.demofuuu.login2main.MainPresenterImpl;
+import com.example.flytv.demofuuu.login2main.MainView;
 import com.example.flytv.demofuuu.utils.OkHttpClientManager;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -39,6 +47,7 @@ import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
@@ -48,12 +57,16 @@ import cn.sharesdk.onekeyshare.OnekeyShare;*/
 //import com.example.flytv.demofuuu.huidiao.DownLoadManager;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView, AdapterView.OnItemClickListener  {
 
 
     /**
      * 接口：http://web.sr.gehua.net.cn/md/api/home/0/index
      */
+    private ListView listView;
+    private ProgressBar progressBar;
+    private MainPresenter presenter;
+
     private ViewPager mvp;
     private TextView tv_title;
     private LinearLayout ll_container;
@@ -109,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
         mvp = (ViewPager) findViewById(R.id.vp);
         ll_container = (LinearLayout) findViewById(R.id.ll_container);
 
+        //login开始
+        listView = (ListView) findViewById(R.id.list);
+        listView.setOnItemClickListener(this);
+        progressBar = (ProgressBar) findViewById(R.id.progress);
+        presenter = new MainPresenterImpl(this, new FindItemsInteractorImpl());
 
         mvp.setAdapter(new MyAdapter());
         //mvp.setCurrentItem(Integer.MAX_VALUE/2);
@@ -168,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     //请求网络数据
     private void getDataFromServer() {
         OkHttpClientManager a=OkHttpClientManager.getInstance();
-        a.getAsyn("http://web.sr.gehua.net.cn/md/api/home/0/index", new OkHttpClientManager.ResultCallback() {
+       /* a.getAsyn("http://web.sr.gehua.net.cn/md/api/home/0/index", new OkHttpClientManager.ResultCallback() {
             @Override
             public void onError(okhttp3.Request request, Exception e) {
                 EventBus.getDefault().post("访问失败了！");
@@ -178,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Object response) {
                 EventBus.getDefault().post("成功了！");
             }
-        });
+        });*/
 
     }
     protected void parseJson(String result){
@@ -249,7 +270,33 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.INVISIBLE);
+    }
 
+    @Override public void hideProgress() {
+        progressBar.setVisibility(View.INVISIBLE);
+        listView.setVisibility(View.VISIBLE);
+    }
+
+    @Override public void setItems(List<String> items) {
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
+    }
+
+    @Override public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        presenter.onItemClicked(position);
+    }
+
+
+    @Override protected void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
     private class MyAdapter extends PagerAdapter {
 
         @Override
@@ -334,6 +381,8 @@ public class MainActivity extends AppCompatActivity {
         MobclickAgent.onPageStart("MainActivity");
 
         MobclickAgent.onResume(this);
+
+        presenter.onResume();
     }
 
     public void onPause() {
