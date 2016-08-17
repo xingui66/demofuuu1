@@ -1,6 +1,7 @@
 package com.example.flytv.demofuuu;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -14,10 +15,13 @@ import okhttp3.OkHttpClient;
  */
 public class MyApplication extends Application {
     public static RequestQueue queue;
-
+    private static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化Context
+        context = getApplicationContext();
+        //初始化Handler
         queue= Volley.newRequestQueue(getApplicationContext());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
 //                .addInterceptor(new LoggerInterceptor("TAG"))
@@ -34,6 +38,8 @@ public class MyApplication extends Application {
     public static RequestQueue getHttpQueue(){
         return queue;
     }
-
+    public static Context getContext() {
+        return context;
+    }
 
 }

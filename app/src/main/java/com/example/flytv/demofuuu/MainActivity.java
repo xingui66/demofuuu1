@@ -39,6 +39,7 @@ import com.example.flytv.demofuuu.login2main.FindItemsInteractorImpl;
 import com.example.flytv.demofuuu.login2main.MainPresenter;
 import com.example.flytv.demofuuu.login2main.MainPresenterImpl;
 import com.example.flytv.demofuuu.login2main.MainView;
+import com.example.flytv.demofuuu.maincontent.MainContentActivity;
 import com.example.flytv.demofuuu.utils.OkHttpClientManager;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Adapter
     private LinearLayout ll_container;
     // private DownLoadManager mManager;
 
-    private Button fragment_l_c;
+    private Button fragment_l_c,maincontent;
     private Context mContext;
     private ActionBarDrawerToggle mToggle;
 
@@ -146,6 +147,21 @@ public class MainActivity extends AppCompatActivity implements MainView, Adapter
         progressBar = (ProgressBar) findViewById(R.id.progress);
         presenter = new MainPresenterImpl(this, new FindItemsInteractorImpl());
 
+        //maincontent主界面的开始
+
+        maincontent=(Button)findViewById(R.id.maincontent);
+        maincontent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MainContentActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
+
+        ///////////////////
         mvp.setAdapter(new MyAdapter());
         //mvp.setCurrentItem(Integer.MAX_VALUE/2);
         mvp.setCurrentItem(mImageIds.length * 10000);//肯定是5的倍数

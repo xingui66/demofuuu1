@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.flytv.demofuuu.maincontent.MainContentActivity">
+
+    <RelativeLayout
+        android:id="@+id/content_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:tabIndicatorColor="#4A4A4A"
+            app:tabSelectedTextColor="#4A4A4A"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabTextColor="#664A4A4A"
+            android:fillViewport="true"
+            android:layout_toStartOf="@+id/search"
+            android:layout_toEndOf="@+id/back"
+            android:text="wrgwr">
+        </android.support.design.widget.TabLayout>
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tab_viewpater"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/content_toolbar">
+
+    </android.support.v4.view.ViewPager>
+</RelativeLayout>

@@ -12,7 +12,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/vp"
             android:layout_width="match_parent"
-            android:layout_height="166dp">
+            android:layout_height="266dp">
         </android.support.v4.view.ViewPager>
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:scrollbarStyle="outsideOverlay"
-        />
+        android:layout_below="@+id/fragment_l_c" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -62,5 +62,13 @@
         android:layout_gravity="center"
         android:visibility="gone"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="maincontent"
+        android:id="@+id/maincontent"
+        android:layout_alignTop="@+id/fragment_l_c"
+        android:layout_toEndOf="@+id/fragment_l_c" />
 
 </RelativeLayout>
