@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.flytv.demofuuu.MyApplication;
 import com.example.flytv.demofuuu.R;
@@ -85,10 +86,6 @@ public class BlankFragment extends Fragment {
             view.setBackgroundResource(mImageIds[i]);
             mImageVeiwList.add(view);
 
-               /* ''''''//初始化小圆点
-                ImageView point = new ImageView(this);
-                point.setImageResource(R.drawable.shape_point_default);
-                llContainer.addView(point);//添加给容器*/
         }
     }
 

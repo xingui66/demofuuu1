@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myradio="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="200dp">
     <TextView
         android:id="@+id/header1"
         android:layout_width="match_parent"
@@ -14,24 +15,108 @@
         android:gravity="center"
         android:visibility="gone"/>
 
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
-        android:id="@+id/zuo" />
+        android:id="@+id/zuo" />-->
+    <Button
+        android:id="@+id/zuo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="#fff"
+        android:button="@null"
+        android:drawableTop="@drawable/bangdan"
+        android:text="榜单"
+        android:textColor="#404040"
+        android:textSize="18sp"
+        android:visibility="gone"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/zhong"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
-        android:id="@+id/you" />
+        android:id="@+id/you"
+        android:visibility="gone"/>
 
+    <RadioGroup
+        android:id="@+id/rgs"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+
+        <com.example.flytv.demofuuu.view.MyRadioButton
+            android:id="@+id/tab_a"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:clickable="true"
+            myradio:mdrawableTop="@drawable/bangdan"
+            myradio:mdrawableSize="20dp"
+            android:gravity="center"
+            android:text="首页"
+            android:textSize="13sp" />
+
+        <com.example.flytv.demofuuu.view.MyRadioButton
+            android:id="@+id/tab_b"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:clickable="true"
+            myradio:mdrawableTop="@drawable/bangdan"
+            myradio:mdrawableSize="30dp"
+            android:gravity="center"
+            android:text="分类"
+            android:textSize="13sp" />
+
+        <com.example.flytv.demofuuu.view.MyRadioButton
+            android:id="@+id/tab_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            myradio:mdrawableTop="@drawable/bangdan"
+            myradio:mdrawableSize="20dp"
+            android:gravity="center"
+            android:checked="false" />
+
+        <com.example.flytv.demofuuu.view.MyRadioButton
+            android:id="@+id/tab_d"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            myradio:mdrawableTop="@drawable/bangdan"
+            myradio:mdrawableSize="50dp"
+            android:gravity="center"
+            android:text="发现"
+            android:textSize="13sp" />
+
+        <com.example.flytv.demofuuu.view.MyRadioButton
+            android:id="@+id/tab_e"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            myradio:mdrawableTop="@drawable/bangdan"
+            myradio:mdrawableSize="70dp"
+            android:gravity="center"
+            android:text="我的"
+
+            android:textSize="13sp" />
+    </RadioGroup>
 
 </LinearLayout>

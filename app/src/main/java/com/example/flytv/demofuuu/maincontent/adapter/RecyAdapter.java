@@ -1,12 +1,17 @@
 package com.example.flytv.demofuuu.maincontent.adapter;
 
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.example.flytv.demofuuu.MyApplication;
 import com.example.flytv.demofuuu.R;
 import com.example.flytv.demofuuu.maincontent.holder.ListHolder;
 import com.example.flytv.demofuuu.maincontent.holder.RecyHolder;
@@ -28,6 +33,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
     private View mHeaderView;
     private View mHeader1View;
     private View mFooterView;
+    private int mPointDistance;//圆点移动距离
     //HeaderView和FooterView的get和set函数
     public View getHeaderView() {
         return mHeaderView;
@@ -110,7 +116,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
     //绑定View,   填充数据   ，这里是根据返回的这个position的类型，从而进行绑定的，   HeaderView和FooterView, 就不同绑定了
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == BTYPE_NORMAL) {
             if (holder instanceof ListHolder) {
                 //这里加载数据的时候要注意，是从position-2开始，因为position==0已经被header占用了,position==1已经被header1占用了
@@ -121,8 +127,73 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         } else if (getItemViewType(position) == BTYPE_HEADER) {
             if (holder instanceof RecyHolder) {
                 //这里加载数据的时候要注意，是从position-2开始，因为position==0已经被header占用了,position==1已经被header1占用了
+
+               for(int i=0;i<3;i++){
+                   ImageView point =new ImageView(MyApplication.getContext());
+                   point.setImageResource(R.drawable.shape_point_default); //画形状,solid,填充色
+                   //初始化布局参数（找其父级）
+                   LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                   if(i>0){
+                       params.leftMargin=10;
+                   }
+                   point.setLayoutParams(params);
+                   ((RecyHolder) holder).llContainer.addView(point);//添加给容器
+
+               }
+
                 //初始化三张图片Imageview，为对象，只有变成对象，才能操作对象
                 ((RecyHolder) holder).vpcontent.setAdapter(new GuideAdapter());
+                ((RecyHolder) holder).vpcontent.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        /*if (position == mImageVeiwList.size() - 1) {
+                            //最后一个页面
+                            btnStart.setVisibility(View.VISIBLE);
+                        } else {
+                            btnStart.setVisibility(View.GONE);
+                        }*/
+                    }
+
+                    //页面滑动监听
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset,
+                                               int positionOffsetPixels) {
+                        System.out.println("当前位置:" + position + ";偏移百分比:"
+                                + positionOffset);
+
+                        int leftMargin = (int) (mPointDistance * positionOffset + mPointDistance
+                                * position);//计算小红点当前应该移动的距离
+
+                        //通过修改小红点左边距来更新位置
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ((RecyHolder) holder).iv_red_point
+                                .getLayoutParams();
+                        params.leftMargin = leftMargin;
+                        ((RecyHolder) holder).iv_red_point.setLayoutParams(params);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+                ((RecyHolder) holder).iv_red_point.getViewTreeObserver().addOnGlobalLayoutListener(
+                        new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                            //layout执行结束的回调
+                            @Override
+                            public void onGlobalLayout() {
+                                mPointDistance = ((RecyHolder) holder).llContainer.getChildAt(1).getLeft()
+                                        - ((RecyHolder) holder).llContainer.getChildAt(0).getLeft();
+                                System.out.println("width:" + mPointDistance);
+
+                                //移除视图树监听
+                                ((RecyHolder) holder).iv_red_point.getViewTreeObserver()
+                                        .removeGlobalOnLayoutListener(this);
+                                //ivRedPoint.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+                        });
+
 
                 return;
             }
@@ -130,9 +201,9 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             if (holder instanceof RecycenterHolder) {
                 //这里加载数据的时候要注意，是从position-2开始，因为position==0已经被header占用了,position==1已经被header1占用了
                 //初始化三张图片Imageview，为对象，只有变成对象，才能操作对象
-                ((RecycenterHolder) holder).btn1.setText("左");
+               /* ((RecycenterHolder) holder).btn1.setText("左");
                 ((RecycenterHolder) holder).btn2.setText("中");
-                ((RecycenterHolder) holder).btn3.setText("右");
+                ((RecycenterHolder) holder).btn3.setText("右");*/
 
                 return;
             }

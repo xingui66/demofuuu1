@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<declare-styleable name="RadioView">
+    <attr name="rbDrawableTopSize" format="dimension"/>
+    <attr name="rbDrawableTop" format="reference"/>
+</declare-styleable>
+    <declare-styleable name="MyRadioButton">
+
+        <attr name="mdrawableSize" format="dimension"/>
+        <attr name="mdrawableTop" format="reference"/>
+        <attr name="mdrawableLeft" format="reference"/>
+        <attr name="mdrawableRight" format="reference"/>
+        <attr name="mdrawableBottom" format="reference"/>
+
+    </declare-styleable>
+</resources>
